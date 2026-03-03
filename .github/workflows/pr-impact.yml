@@ -26,8 +26,12 @@ jobs:
 
       - name: Download latest pr-impact
         run: |
-          curl -L -o pr-impact.jar \
+          curl -L -f -o pr-impact.jar \
             https://github.com/Philippvs/pr-impact/releases/latest/download/pr-impact.jar
+          echo "Downloaded file size:"
+          ls -lh pr-impact.jar
+          echo "File type:"
+          file pr-impact.jar
 
       - name: Run PR Impact Analysis
         run: |
