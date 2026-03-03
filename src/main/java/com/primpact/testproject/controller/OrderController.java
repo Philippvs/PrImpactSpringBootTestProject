@@ -1,7 +1,9 @@
 package com.primpact.testproject.controller;
 
+import com.primpact.testproject.entity.OrderEntity;
 import com.primpact.testproject.model.OrderRequest;
 import com.primpact.testproject.model.OrderResponse;
+import com.primpact.testproject.repository.OrderRepository;
 import com.primpact.testproject.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -10,15 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// CHANGE SCENARIO: API BREAKING
+// CHANGE SCENARIO: ARCHITECTURE - Controller now depends on Repository directly!
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
+    // ARCHITECTURE VIOLATION: Controller -> Repository (bypassing service layer)
+    private final OrderRepository orderRepository;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderRepository orderRepository) {
         this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     // CHANGE SCENARIO: API BREAKING
@@ -68,5 +73,19 @@ public class OrderController {
     @GetMapping("/export/status")
     public ResponseEntity<Boolean> getExportStatus() {
         return ResponseEntity.ok(orderService.isExportEnabled());
+    }
+
+    // ARCHITECTURE VIOLATION: Direct repository access from controller
+    @GetMapping("/raw/{id}")
+    public ResponseEntity<OrderEntity> getRawOrder(@PathVariable Long id) {
+        return orderRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ARCHITECTURE VIOLATION: Direct repository access for count
+    @GetMapping("/count")
+    public ResponseEntity<Long> getOrderCount() {
+        return ResponseEntity.ok(orderRepository.count());
     }
 }
