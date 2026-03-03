@@ -17,19 +17,24 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    private static final BigDecimal DISCOUNT_THRESHOLD = BigDecimal.valueOf(1000);
-    private static final BigDecimal HIGH_VALUE_THRESHOLD = BigDecimal.valueOf(5000);
-    private static final BigDecimal PREMIUM_THRESHOLD = BigDecimal.valueOf(10000);
+    // BUSINESS LOGIC CHANGED: Thresholds lowered significantly
+    private static final BigDecimal DISCOUNT_THRESHOLD = BigDecimal.valueOf(500);
+    private static final BigDecimal HIGH_VALUE_THRESHOLD = BigDecimal.valueOf(2500);
+    private static final BigDecimal PREMIUM_THRESHOLD = BigDecimal.valueOf(5000);
 
     private final OrderRepository orderRepository;
     private final FakePaymentClient paymentClient;
+    // CIRCULAR DEPENDENCY: OrderService -> UserService -> OrderService
+    private final UserService userService;
 
     @Value("${feature.export.enabled:false}")
     private boolean exportEnabled;
 
-    public OrderService(OrderRepository orderRepository, FakePaymentClient paymentClient) {
+    public OrderService(OrderRepository orderRepository, FakePaymentClient paymentClient,
+                        @org.springframework.context.annotation.Lazy UserService userService) {
         this.orderRepository = orderRepository;
         this.paymentClient = paymentClient;
+        this.userService = userService;
     }
 
     // CHANGE SCENARIO: BUSINESS LOGIC
