@@ -1,0 +1,43 @@
+# CHANGE SCENARIO: CONFIG
+spring:
+  application:
+    name: pr-impact-test-project
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+# CHANGE SCENARIO: CONFIG
+# Feature Flags - Change these to test config drift scenarios
+feature:
+  export:
+    enabled: false  # CHANGE SCENARIO: CONFIG - Change to true for config drift
+
+# CHANGE SCENARIO: CONFIG
+# Actuator Configuration - Modify exposure for security testing
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health  # CHANGE SCENARIO: CONFIG - Change to "*" for exposure drift
+  endpoint:
+    health:
+      show-details: when_authorized
+
+# CHANGE SCENARIO: CONFIG
+# Logging Configuration - Change level for debugging scenarios
+logging:
+  level:
+    root: INFO  # CHANGE SCENARIO: CONFIG - Change to DEBUG for verbose logging
+    com.primpact.testproject: INFO
+    org.springframework.security: INFO
