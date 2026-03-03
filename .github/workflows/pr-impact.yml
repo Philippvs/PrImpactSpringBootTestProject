@@ -1,0 +1,39 @@
+name: PR Impact Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Download latest pr-impact
+        run: |
+          curl -L -o pr-impact.jar \
+            https://github.com/Philippvs/pr-impact/releases/latest/download/pr-impact.jar
+
+      - name: Run PR Impact Analysis
+        run: |
+          java -jar pr-impact.jar \
+            --base origin/${{ github.base_ref }} \
+            --head HEAD \
+            --github-comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
