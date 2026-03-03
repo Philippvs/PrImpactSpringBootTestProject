@@ -18,26 +18,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - name: Run PR Impact
+        uses: Philippvs/pr-impact@v2.5.1
         with:
-          distribution: temurin
-          java-version: 21
-
-      - name: Download latest pr-impact
-        run: |
-          curl -L -f -o pr-impact.jar \
-            https://github.com/Philippvs/pr-impact/releases/latest/download/pr-impact.jar
-          echo "Downloaded file size:"
-          ls -lh pr-impact.jar
-          echo "File type:"
-          file pr-impact.jar
-
-      - name: Run PR Impact Analysis
-        run: |
-          java -jar pr-impact.jar \
-            --base origin/${{ github.base_ref }} \
-            --head HEAD \
-            --github-comment
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
