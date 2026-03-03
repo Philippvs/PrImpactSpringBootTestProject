@@ -1,5 +1,6 @@
 package com.primpact.testproject.controller;
 
+import com.primpact.testproject.model.UserDto;
 import com.primpact.testproject.model.UserModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,17 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// CHANGE SCENARIO: SECURITY
+// CHANGE SCENARIO: API BREAKING
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    // SECURITY TEST POINT - PreAuthorize on method
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.noContent().build();
-    }
+    // API BREAKING: DELETE endpoint REMOVED (CRITICAL!)
+    // Was: @DeleteMapping("/{id}") public ResponseEntity<Void> deleteUser(...)
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
@@ -34,12 +31,28 @@ public class UserController {
         return ResponseEntity.ok(new ArrayList<>());
     }
 
-    // CHANGE SCENARIO: API BREAKING - Return type
+    // API BREAKING: Return type CHANGED from UserModel to UserDto (MEDIUM!)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/profile")
-    public ResponseEntity<UserModel> getUserProfile(@PathVariable Long id) {
-        UserModel user = new UserModel("user" + id, "user" + id + "@example.com");
-        user.setId(id);
+    public ResponseEntity<UserDto> getUserProfile(@PathVariable Long id) {
+        UserDto user = new UserDto(id, "user" + id, "User " + id);
         return ResponseEntity.ok(user);
+    }
+
+    // API BREAKING: New endpoint ADDED (LOW severity)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
+        user.setId(1L);
+        return ResponseEntity.ok(user);
+    }
+
+    // API BREAKING: Parameter CHANGED - added required 'active' parameter (HIGH!)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}/status")
+    public ResponseEntity<String> getUserStatus(
+            @PathVariable Long id,
+            @RequestParam Boolean active) {
+        return ResponseEntity.ok(active ? "active" : "inactive");
     }
 }
