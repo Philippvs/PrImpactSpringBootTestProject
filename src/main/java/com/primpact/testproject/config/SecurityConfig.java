@@ -29,6 +29,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // CHANGE SCENARIO: SECURITY
                         .requestMatchers("/api/orders/**").authenticated()
+                        .requestMatchers("/api/admin/**").authenticated()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/data/**").authenticated()
                         .requestMatchers("/actuator/health").authenticated()
                         .requestMatchers("/actuator/**").authenticated()
                         .requestMatchers("/h2-console/**").authenticated()
