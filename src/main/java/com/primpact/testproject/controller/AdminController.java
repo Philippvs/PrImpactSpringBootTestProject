@@ -27,8 +27,8 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    // SECURITY TEST POINT - PreAuthorize with SUPER_ADMIN role
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    // SECURITY TEST POINT - PreAuthorize WEAKENED from SUPER_ADMIN to USER (security relaxation!)
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/orders/all")
     public ResponseEntity<Void> deleteAllOrders() {
         return ResponseEntity.noContent().build();

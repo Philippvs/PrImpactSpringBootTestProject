@@ -13,8 +13,7 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    // SECURITY TEST POINT - PreAuthorize on method
-    @PreAuthorize("hasRole('ADMIN')")
+    // SECURITY TEST POINT - PreAuthorize REMOVED (security relaxation!)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         return ResponseEntity.noContent().build();

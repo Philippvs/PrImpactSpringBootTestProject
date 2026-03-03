@@ -4,8 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-// CHANGE SCENARIO: SECURITY - CrossOrigin scenario
+// CHANGE SCENARIO: SECURITY - CrossOrigin ADDED (security relaxation!)
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/data")
 public class ApiController {
 
