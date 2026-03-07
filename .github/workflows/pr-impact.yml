@@ -1,5 +1,7 @@
 name: Debug
-on: workflow_dispatch
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   test:
     runs-on: ubuntu-latest
