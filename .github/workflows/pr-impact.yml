@@ -1,44 +1,24 @@
-name: Debug
+name: PR Impact Analysis
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+permissions:
+  contents: read
+  pull-requests: write
 
-      - name: Checkout private repo
-        if: github.event.pull_request.head.repo.full_name == github.repository
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with full history
         uses: actions/checkout@v4
         with:
-          repository: Philippvs/pr-impact
-          token: ${{ secrets.PAT }}
-          path: pr-impact
-#name: PR Impact Analysis
-#
-#on:
-#  pull_request:
-#    types: [opened, synchronize, reopened]
-#
-#permissions:
-#  contents: read
-#  pull-requests: write
-#
-#jobs:
-#  analyze:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout with full history
-#        uses: actions/checkout@v4
-#        with:
-#          fetch-depth: 0
-#
-#
-#      - name: use PR Impact GH Action
-#        uses: Philippvs/pr-impact@v2.5.2
+          fetch-depth: 0
 
-
+      - name: use PR Impact GH Action
+        uses: Philippvs/pr-impact@v2.5.2
+        with:
+          github-token: ${{ github.token }}
