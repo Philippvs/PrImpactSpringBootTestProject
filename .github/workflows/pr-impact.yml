@@ -1,23 +1,23 @@
-name: PR Impact Analysis
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
-permissions:
-  contents: read
-  pull-requests: write
-
 name: Debug
- on: workflow_dispatch
- jobs:
-   test:
-     runs-on: ubuntu-latest
-     steps:
-       - uses: actions/checkout@v4
-         with:
-           repository: Philippvs/pr-impact
-           token: ${{ secrets.GITHUB_TOKEN }}
+on: workflow_dispatch
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: Philippvs/pr-impact
+          token: ${{ secrets.GITHUB_TOKEN }}
+#name: PR Impact Analysis
+#
+#on:
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+#
+#permissions:
+#  contents: read
+#  pull-requests: write
+#
 #jobs:
 #  analyze:
 #    runs-on: ubuntu-latest
