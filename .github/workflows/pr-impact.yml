@@ -18,7 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
+
       - name: use PR Impact GH Action
         uses: Philippvs/pr-impact@v2.5.2
         with:
           github-token: ${{ github.token }}
+          fail-on-risk: "CRITICAL"
