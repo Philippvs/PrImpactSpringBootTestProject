@@ -1,7 +1,7 @@
 name: Debug
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
@@ -9,9 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Checkout private repo
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v4
         with:
           repository: Philippvs/pr-impact
           token: ${{ secrets.PAT }}
+          path: pr-impact
 #name: PR Impact Analysis
 #
 #on:
