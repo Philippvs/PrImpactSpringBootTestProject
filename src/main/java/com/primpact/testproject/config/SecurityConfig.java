@@ -21,21 +21,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // SECURITY TEST POINT - CSRF is enabled (not disabled)
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")
-                )
+                // SECURITY TEST POINT - CSRF DISABLED (CRITICAL config change!)
+                .csrf(csrf -> csrf.disable())
                 // SECURITY TEST POINT - Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        // CHANGE SCENARIO: SECURITY
+                        // CHANGE SCENARIO: CONFIG - permitAll ADDED (CRITICAL!)
+                        .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/api/orders/**").authenticated()
                         .requestMatchers("/api/admin/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/data/**").authenticated()
-                        .requestMatchers("/actuator/health").authenticated()
                         .requestMatchers("/actuator/**").authenticated()
                         .requestMatchers("/h2-console/**").authenticated()
-                        // SECURITY TEST POINT - No permitAll for sensitive endpoints
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> {})

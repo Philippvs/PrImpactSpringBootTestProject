@@ -16,35 +16,35 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-  # CHANGE SCENARIO: CONFIG - Security related config
+  # CHANGE SCENARIO: CONFIG - Security related config CHANGED (HIGH severity)
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: original-client-id
+            client-id: new-client-id
             client-secret: ${GOOGLE_CLIENT_SECRET:secret}
 
 # CHANGE SCENARIO: CONFIG
-# Feature Flags - Change these to test config drift scenarios
+# Feature Flags - CHANGED (HIGH severity)
 feature:
   export:
-    enabled: false
-  exportV2: false
+    enabled: true
+  exportV2: true
   newDashboard: false
 
 # CHANGE SCENARIO: CONFIG
-# Actuator Configuration - Modify exposure for security testing
+# Actuator Configuration - CHANGED to expose ALL endpoints (CRITICAL severity!)
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: "*"
 
 # CHANGE SCENARIO: CONFIG
-# Logging Configuration - Change level for debugging scenarios
+# Logging Configuration - CHANGED to DEBUG (LOW severity)
 logging:
   level:
-    root: INFO
-    com.primpact.testproject: INFO
-    org.springframework.security: INFO
+    root: DEBUG
+    com.primpact.testproject: DEBUG
+    org.springframework.security: DEBUG
