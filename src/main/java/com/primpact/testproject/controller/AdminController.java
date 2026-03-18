@@ -41,9 +41,9 @@ public class AdminController {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    // CHANGE SCENARIO: API BREAKING
+    // CHANGE SCENARIO: API BREAKING - HTTP method CHANGED from GET to POST (CRITICAL!)
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/users/{id}/edit")
+    @PostMapping("/users/{id}/edit")
     public ResponseEntity<String> initUpdateForm(@PathVariable Long id) {
         return ResponseEntity.ok("Edit form for user " + id);
     }

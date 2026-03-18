@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// CHANGE SCENARIO: API BREAKING
+// CHANGE SCENARIO: API BREAKING - Path CHANGED from /api/orders to /api/v2/orders (CRITICAL!)
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/v2/orders")
 public class OrderController {
 
     private final OrderService orderService;
